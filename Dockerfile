@@ -3,7 +3,7 @@ FROM fedora:23
 MAINTAINER Paolo Patierno <ppatierno@live.com>
 
 # install java, gettext (for envsubst)
-RUN dnf -y install java-1.8.0-openjdk libaio python gettext
+RUN dnf -y install java-1.8.0-openjdk libaio python gettext hostname
 
 ENV ARTEMIS_VERSION 1.4.0
 
