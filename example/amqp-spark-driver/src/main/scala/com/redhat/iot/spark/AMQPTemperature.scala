@@ -28,10 +28,10 @@ object AMQPTemperature {
 
     if (args.length < 2) {
       System.err.println("Usage: AMQPTemperature <hostname> <port> [<checkpointdir>]")
-      System.exit(1);
+      System.exit(1)
     }
 
-    host = args(0);
+    host = args(0)
     port = args(1).toInt
 
     if (args.length > 2 && !args(2).isEmpty)
