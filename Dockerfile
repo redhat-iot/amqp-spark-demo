@@ -16,10 +16,13 @@ RUN tar xvfz apache-artemis-$ARTEMIS_VERSION-bin.tar.gz -C /opt
 ENV ARTEMIS_HOME=/opt/apache-artemis-$ARTEMIS_VERSION 
 ENV PATH=$ARTEMIS_HOME/bin:$PATH
 
-COPY ./utils/run_artemis.sh $ARTEMIS_HOME/bin/
+COPY ./utils/run_artemis.sh ./utils/get_free_instance.py $ARTEMIS_HOME/bin/
 COPY ./config_templates /config_templates
 
+VOLUME /var/run/artemis
+
 RUN chmod +x $ARTEMIS_HOME/bin/run_artemis.sh
+RUN chmod +x $ARTEMIS_HOME/bin/get_free_instance.py
 
 EXPOSE 5672
 
