@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.apache.spark</groupId>
-    <artifactId>amqp-spark-example</artifactId>
+    <artifactId>amqp-spark-driver</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
