@@ -21,5 +21,49 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- used for compiling Scala source file with "mvn compile" -->
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <!-- Scala sources need to be compiled before Java ones (so before maven-compiler-plugin)
+                     In order to do so, the "compile" goal is tied to the "process-resources" phase so
+                     before the "compile" phase. Otherwise maven-compiler-plugin starts first -->
+                <executions>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>scala-test-compile-first</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- used for creating a fat jar with all dependencies on "mvn package" -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
 
 </project>

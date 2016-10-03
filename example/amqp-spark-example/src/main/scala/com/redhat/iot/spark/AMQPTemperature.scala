@@ -1,3 +1,5 @@
+package com.redhat.iot.spark
+
 import org.apache.qpid.proton.amqp.messaging.{AmqpValue, Section}
 import org.apache.qpid.proton.message.Message
 import org.apache.spark.SparkConf
@@ -16,18 +18,24 @@ object AMQPTemperature {
   private val batchDuration: Duration = Seconds(1)
   private var checkpointDir: String = "/tmp/spark-streaming-amqp"
 
-  private val host: String = "localhost"
-  private val port: Int = 5672
+  private var host: String = "localhost"
+  private var port: Int = 5672
   private val address: String = "temperature"
 
   private val jsonMessageConverter: AMQPJsonFunction = new AMQPJsonFunction()
 
   def main(args: Array[String]): Unit = {
 
-    // Logger.getLogger("org").setLevel(Level.WARN)
+    if (args.length < 2) {
+      System.err.println("Usage: AMQPTemperature <hostname> <port> [<checkpointdir>]")
+      System.exit(1);
+    }
 
-    if (!args(0).isEmpty)
-      checkpointDir = args(0)
+    host = args(0);
+    port = args(1).toInt
+
+    if (args.length > 2 && !args(2).isEmpty)
+      checkpointDir = args(2)
 
     // get temperature value directly from AMQP body with custom converter ...
     val ssc = StreamingContext.getOrCreate(checkpointDir, createStreamingContext)
@@ -49,7 +57,8 @@ object AMQPTemperature {
 
   def createStreamingContext(): StreamingContext = {
 
-    val conf = new SparkConf().setMaster(master).setAppName(appName)
+    //val conf = new SparkConf().setMaster(master).setAppName(appName)
+    val conf = new SparkConf().setAppName(appName)
     conf.set("spark.streaming.receiver.writeAheadLog.enable", "true")
     //conf.set("spark.streaming.receiver.maxRate", "10000")
     //conf.set("spark.streaming.backpressure.enabled", "true")
