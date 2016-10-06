@@ -89,7 +89,7 @@ oc new-app oshinko
 Last step is to run an Apache Artemis instance into the same cluster.
 
 ``` shell
-curl https://raw.githubusercontent.com/redhat-iot/amqp-spark-demo/master/cluster/artemis-rc.yaml | ./oc create -f -
+curl https://raw.githubusercontent.com/redhat-iot/amqp-spark-demo/master/cluster/artemis-rc.yaml | oc create -f -
 ```
 
 ## Deploying the Apache Spark cluster
