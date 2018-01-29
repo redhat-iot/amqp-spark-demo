@@ -54,28 +54,16 @@ $ oc cluster up
 
 When the cluster is up and running few other steps are needed for adding the Oshinko application which is in charge to deploy the Apache Spark cluster.
 
-Create an "oshinko" ServiceAccount, used by Oshinko to write to the OpenShift API.
+Easy way is to use tooling from radanalytics.io. Create service account and couple of templates by invoking:
 
 ``` shell
-echo '{"apiVersion": "v1", "kind": "ServiceAccount", "metadata": {"name": "oshinko"}}' | oc create -f -
-```
-
-Authorize the "oshinko" ServiceAccount to write to the OpenShift API.
-
-``` shell
-oc policy add-role-to-user admin -z oshinko
-```
-
-Create the Oshinko template.
-
-``` shell
-curl https://raw.githubusercontent.com/radanalyticsio/oshinko-rest/master/tools/server-ui-template.yaml | oc create -f -
+oc create -f https://radanalytics.io/resources.yaml
 ```
 
 Launch Oshinko in the current project.
 
 ``` shell
-oc new-app oshinko
+oc new-app --template=oshinko-webui
 ```
 
 Last step is to run an Apache Artemis instance into the same cluster.
@@ -95,7 +83,7 @@ The Oshinko web application provides a simple "deploy" button in order to deploy
 
 Just for the demo, 2 nodes are enough.
 
-After deploying the cluster, the Oshinko web application shows the addresses for all nodes but the most important is the "master" one that could be something like this :
+After deploying the cluster, the Oshinko web application shows the addresses for all nodes but the most important is the "master" one that could be something like this (you can see the ip in Spark UI):
 
 ```
 spark://172.17.0.7:7077
