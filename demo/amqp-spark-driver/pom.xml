@@ -15,7 +15,7 @@
             <version>2.0.0</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.spark</groupId>
+            <groupId>io.radanalytics</groupId>
             <artifactId>spark-streaming-amqp_2.11</artifactId>
             <version>0.1.0</version>
         </dependency>
