@@ -9,21 +9,13 @@ At same time, a Spark driver application uses the AMQP connector for reading the
 
 ## Requirements to build/run:
 
-Tha main requirements for running the demo are :
+The main requirements for running the demo are :
 
 * [Maven](https://maven.apache.org/)
 
 ## Building the demo source code
 
-The first component needed for running the demo is the AMQP Spark Streaming connector, which provides an AMQP protocol head for Spark Streaming in order to ingest messages from AMQP based sources (i.e. broker, direct publisher through a router network, ...). The related project is available [here](https://github.com/redhatanalytics/dstream-amqp) and it needs to be compiled and installed into the local Maven repository in order to be available for the demo application.
-
-``` shell
-$ git clone https://github.com/redhatanalytics/dstream-amqp.git
-$ cd dstream-amqp
-$ mvn clean install
-```
-
-Now that the AMQP Spark Streaming connector is available locally, the current demo repository needs to be cloned in order to compile and package the demo application. The demo source code has two main parts :
+The current demo repository needs to be cloned in order to compile and package the demo application. The demo source code has two main parts:
 
 * the Spark driver application which connects to an AMQP source for getting messages and uses the AMQP connector for pushing them into the Spark Streaming engine, showing on the console the output.
 * the publisher application which uses the Vert.x Proton library for connecting to an AMQP address (i.e. a queue) and sending messages.
@@ -62,28 +54,16 @@ $ oc cluster up
 
 When the cluster is up and running few other steps are needed for adding the Oshinko application which is in charge to deploy the Apache Spark cluster.
 
-Create an "oshinko" ServiceAccount, used by Oshinko to write to the OpenShift API.
+Easy way is to use tooling from radanalytics.io. Create service account and couple of templates by invoking:
 
 ``` shell
-echo '{"apiVersion": "v1", "kind": "ServiceAccount", "metadata": {"name": "oshinko"}}' | oc create -f -
-```
-
-Authorize the "oshinko" ServiceAccount to write to the OpenShift API.
-
-``` shell
-oc policy add-role-to-user admin -z oshinko
-```
-
-Create the Oshinko template.
-
-``` shell
-curl https://raw.githubusercontent.com/radanalyticsio/oshinko-rest/master/tools/server-ui-template.yaml | oc create -f -
+oc create -f https://radanalytics.io/resources.yaml
 ```
 
 Launch Oshinko in the current project.
 
 ``` shell
-oc new-app oshinko
+oc new-app --template=oshinko-webui
 ```
 
 Last step is to run an Apache Artemis instance into the same cluster.
@@ -103,7 +83,7 @@ The Oshinko web application provides a simple "deploy" button in order to deploy
 
 Just for the demo, 2 nodes are enough.
 
-After deploying the cluster, the Oshinko web application shows the addresses for all nodes but the most important is the "master" one that could be something like this :
+After deploying the cluster, the Oshinko web application shows the addresses for all nodes but the most important is the "master" one that could be something like this (you can see the ip in Spark UI):
 
 ```
 spark://172.17.0.7:7077
